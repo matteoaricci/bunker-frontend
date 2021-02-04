@@ -1,40 +1,36 @@
-import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import React, { useState, useEffect } from 'react';
+import { ChakraProvider, theme } from '@chakra-ui/react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Home from './components/Home';
+import ProjectPage from './components/ProjectPage'
+import Navbar from './components/Navbar'
 
 function App() {
+  const [loggedIn, setloggedIn] = useState(false);
+  const [currentUser, setcurrentUser] = useState({});
+  const [projects, setProjects] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users/2')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        // setcurrentUser(data.user)
+        // setProjects(data.projects)
+        setloggedIn(true)
+      });
+  }, []);
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
+      <Navbar />
+      <Switch>
+        <Route path="/">
+          <Home currentUser={currentUser} projects={projects}/>
+        </Route>
+        <Route path="/project/:id">
+          render={(props) => (<ProjectPage {...props}/>)}
+        </Route>
+      </Switch>
     </ChakraProvider>
   );
 }
