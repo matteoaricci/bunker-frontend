@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
+import ProjectPage from './containers/ProjectPage';
 
 function App() {
   const [loggedIn, setloggedIn] = useState(false);
@@ -19,7 +20,7 @@ function App() {
   }, []);
   return (
     <Switch>
-      <Route path="/">
+      <Route exact path="/">
         {console.log(loggedIn)}
         <Home
           currentUser={currentUser}
@@ -27,9 +28,7 @@ function App() {
           setProjects={setProjects}
         />
       </Route>
-      {/* <Route path="/project/:id">
-          render={(props) => (<ProjectPage {...props}/>)}
-        </Route> */}
+      <Route path="/project/:id" render={props => <ProjectPage {...props} />} />
     </Switch>
   );
 }

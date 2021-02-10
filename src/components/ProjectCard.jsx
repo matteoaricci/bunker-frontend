@@ -12,7 +12,7 @@ const ProjectCard = props => {
       w="300px"
       h="200px"
       boxShadow="md"
-      overflow="hidden"
+      // overflow="hidden"
     >
       <Box
         style={{ backdropFilter: 'blur(5px)' }}
