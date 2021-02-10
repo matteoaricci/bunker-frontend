@@ -1,26 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import ProjectCard from './ProjectCard';
-import { Grid, GridItem } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useDisclosure } from '@chakra-ui/react';
+import ProjectCardContainer from '../containers/ProjectCardContainer';
 
 const Home = props => {
-  const { currentUser, projects } = props;
-  const fullName = currentUser.first_name + ' ' + currentUser.last_name;
+  const { currentUser, projects, setProjects } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [projectTitle, setProjectTitle] = useState('');
+
+  const submitNewProject = () => {
+    fetch('http://localhost:3000/projects', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: projectTitle,
+        user_id: currentUser.id,
+      }),
+    })
+      .then(resp => resp.json())
+      .then(project => {
+        onClose();
+        setProjects([...projects, project]);
+        setProjectTitle('');
+      });
+  };
+
   return (
     <div>
-      <h1>Welcome {fullName}</h1>
-
-      <Grid
-        templateColumns="repeat(2, 1fr)"
-        gap={6}
-        w="50%"
-        style={{ margin: '0 auto'}}
-      >
-        {projects.map(project => (
-          <GridItem>
-            <ProjectCard key={project.id} project={project} />
-          </GridItem>
-        ))}
-      </Grid>
+      <ProjectCardContainer
+        onOpen={onOpen}
+        projects={projects}
+        projectTitle={projectTitle}
+        setProjectTitle={setProjectTitle}
+        isOpen={isOpen}
+        onClose={onClose}
+        submitNewProject={submitNewProject}
+      />
     </div>
   );
 };
