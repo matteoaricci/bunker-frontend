@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChakraProvider, theme } from '@chakra-ui/react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 
 function App() {
@@ -19,20 +18,19 @@ function App() {
       });
   }, []);
   return (
-    <ChakraProvider theme={theme}>
-      <Switch>
-        <Route path="/">
-          <Home
-            currentUser={currentUser}
-            projects={projects}
-            setProjects={setProjects}
-          />
-        </Route>
-        {/* <Route path="/project/:id">
+    <Switch>
+      <Route path="/">
+        {console.log(loggedIn)}
+        <Home
+          currentUser={currentUser}
+          projects={projects}
+          setProjects={setProjects}
+        />
+      </Route>
+      {/* <Route path="/project/:id">
           render={(props) => (<ProjectPage {...props}/>)}
         </Route> */}
-      </Switch>
-    </ChakraProvider>
+    </Switch>
   );
 }
 

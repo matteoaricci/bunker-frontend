@@ -8,6 +8,7 @@ const ProjectCard = props => {
       style={{ margin: '0 auto' }}
       rounded="2%"
       maxW="300px"
+      minW="300px"
       w="300px"
       h="200px"
       boxShadow="md"

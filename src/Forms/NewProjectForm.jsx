@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FormControl,
-  FormLabel,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -10,8 +9,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
 } from '@chakra-ui/react';
 
