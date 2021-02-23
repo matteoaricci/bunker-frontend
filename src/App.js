@@ -21,7 +21,6 @@ function App() {
   return (
     <Switch>
       <Route exact path="/">
-        {console.log(loggedIn)}
         <Home
           currentUser={currentUser}
           projects={projects}

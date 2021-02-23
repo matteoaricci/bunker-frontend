@@ -27,12 +27,30 @@ const ProjectPage = ({ match }) => {
       .then(task => {
         let currentProj = Object.assign({}, project);
         let newProj = currentProj;
-        console.log(newProj.columns[colIndex]);
         newProj.columns[colIndex].tasks = [
           ...newProj.columns[colIndex].tasks,
           task,
         ];
-        console.log(newProj === project);
+        setProject(newProj);
+      });
+  };
+
+  const removeTask = (colIndex, task) => {
+    fetch('http://localhost:3000/tasks/' + task.id, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        id: task.id,
+      }),
+    })
+      .then(resp => resp.json())
+      .then(task => {
+        let newProj = Object.assign({}, project);
+        let newColumn = newProj.columns[colIndex].tasks.filter(t => t.id !== task.id);
+        newProj.columns[colIndex].tasks = newColumn
         setProject(newProj);
       });
   };
@@ -42,7 +60,12 @@ const ProjectPage = ({ match }) => {
       <h1>{project.title}</h1>
       <HStack className="columns" overflowX="auto" pb="5px">
         {project.columns?.map((column, index) => (
-          <ColumnCard addTask={addTask} column={column} colIndex={index} />
+          <ColumnCard
+            removeTask={removeTask}
+            addTask={addTask}
+            column={column}
+            colIndex={index}
+          />
         ))}
       </HStack>
     </div>
